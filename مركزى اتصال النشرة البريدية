@@ -1,0 +1,39 @@
+<script>
+(function () {
+  "use strict";
+
+  const AQX_AUDIENCE_API =
+    "https://script.google.com/macros/s/AKfycbzyrRDLyjwyhDMiQo-dRnBe2bxBrrjjIb3fEidvLXHFZxw010AO6VAYxOR8amy9TrhV5g/exec";
+
+  window.AQXAudience = {
+
+    subscribe: async function (email, platformId) {
+
+      const payload = {
+        action: "subscribe",
+        email: String(email).trim().toLowerCase(),
+        platform_id: platformId || "aqx-main",
+        source: "aqx_universal_widget",
+        page_url: window.location.href,
+        page_title: document.title,
+        hostname: window.location.hostname,
+        language: navigator.language || "",
+        timezone:
+          Intl.DateTimeFormat().resolvedOptions().timeZone || ""
+      };
+
+      const response = await fetch(AQX_AUDIENCE_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      return await response.json();
+    }
+
+  };
+
+})();
+</script>
